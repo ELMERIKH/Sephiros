@@ -1,0 +1,4 @@
+pyinstaller
+colorama
+pyarmor
+requests
