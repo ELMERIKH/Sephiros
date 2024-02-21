@@ -1,4 +1,3 @@
 nuitka
 colorama
-pyarmor
 requests
