@@ -6,7 +6,7 @@ import random
 from colorama import Fore, Style
 import subprocess
 import sys
-
+import base64
 import platform
 def display_ansi_art(file_path):
     with open(file_path, 'r', encoding='latin-1') as file:
@@ -15,22 +15,17 @@ def display_ansi_art(file_path):
 
 def create_exe(py_file):
     try:
-        
-
+       
         try:
             
             
             is_windows = platform.system().lower() == "windows"
             python_executable = "python" if is_windows else "python3"
             if platform.system().lower() != "windows":
-                raise Exception("You need to compile in a Windows environment .")
+                raise Exception("You need to compile in a Windows environment use -Pl to specify target Platforme .")
             nuitka_command = [
                 python_executable, "-m", "nuitka",
                 "--onefile",
-                "--company-name=Sephiroth",
-                "--file-version=1.2",
-                "--copyright=COPYRIGHT@Sephiroth",
-                "--trademarks=No Enemies",
                 
                 "--disable-console",
                 "--standalone",
@@ -44,6 +39,7 @@ def create_exe(py_file):
             
             
             subprocess.run(nuitka_command)
+            
         except subprocess.CalledProcessError as e:
                 print(f"Error in subprocess: {e}")
 

