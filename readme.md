@@ -17,6 +17,13 @@ you can also just embed shellcode into the PE directly using -sh 'pathofshellcod
 
 python Sephiros.py -sh 'pathto_shellcode'
 
+setup
+---------
+
+pip install -r requirements.txt
+
+python Sephiroth.py
+
 fileless executing example:
 -------------------
 generate shellcode with:
