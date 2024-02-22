@@ -24,7 +24,7 @@ pip install -r requirements.txt
 
 python Sephiroth.py
 
-fileless executing example:
+fileless execution example:
 -------------------
 generate shellcode with:
 
